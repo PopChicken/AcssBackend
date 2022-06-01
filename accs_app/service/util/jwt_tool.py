@@ -46,7 +46,7 @@ def preprocess_token(
             if token is None:
                 return JsonResponse({
                     'code': RetCode.FAIL.value,
-                    'success': '需要登录'
+                    'message': '需要登录'
                 })
             try:
                 token = token.removeprefix('Bearer ')

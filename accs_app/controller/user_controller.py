@@ -25,3 +25,4 @@ def query_orders(context: RequestContext, req: HttpRequest) -> JsonResponse:
         'message': 'success',
         'data': orders
     })
+
