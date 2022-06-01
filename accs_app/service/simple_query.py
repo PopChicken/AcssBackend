@@ -1,7 +1,9 @@
 """简单查询服务"""
+from decimal import Decimal
 from typing import Any, Dict, List
 
 from django.db.models.query import QuerySet
+from django.db.models import Sum
 from django.core.exceptions import ObjectDoesNotExist
 
 from accs_app.models import Order, Pile, PileStatus
@@ -34,7 +36,7 @@ def get_all_piles_status() -> List[Dict[str, Any]]:
     for pile in piles:
         pile_status = {
             'pile_id': str(pile.pile_id),
-            'status': PileStatus[pile.status],
+            'status': PileStatus(pile.status).name,
             'cumulative_usage_times': pile.cumulative_usage_times,
             'cumulative_charging_time': pile.cumulative_charging_time,
             'cumulative_charging_amount': pile.cumulative_charging_amount
@@ -51,3 +53,25 @@ def update_pile_status(pile_id: int, status: PileStatus) -> None:
 
     pile.status = status
     pile.save()
+
+
+def query_report() -> List[Dict[str, Any]]:
+    status_list = []
+    # 使用聚集函数时decimal会损失保留几位小数的信息
+    piles: QuerySet[Pile] = Pile.objects\
+        .annotate(cumulative_charging_earning=Sum('order__charging_cost'),
+                  cumulative_service_earning=Sum('order__service_cost'),
+                  cumulative_earning=Sum('order__total_cost'))
+    for pile in piles:
+        pile_status = {
+            'pile_id': str(pile.pile_id),
+            'status': PileStatus(pile.status).name,
+            'cumulative_usage_times': pile.cumulative_usage_times,
+            'cumulative_charging_time': pile.cumulative_charging_time,
+            'cumulative_charging_amount': pile.cumulative_charging_amount,
+            'cumulative_charging_earning': pile.cumulative_charging_earning.quantize(Decimal('0.00')),
+            'cumulative_service_earning': pile.cumulative_service_earning.quantize(Decimal('0.00')),
+            'cumulative_earning': pile.cumulative_earning.quantize(Decimal('0.00'))
+        }
+        status_list.append(pile_status)
+    return status_list

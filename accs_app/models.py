@@ -15,9 +15,9 @@ class User(models.Model):
 class PileStatus(models.IntegerChoices):
     """充电桩状态枚举类
     """
-    SHUTDOWN = 1  # 已关机
-    MAINTAINING = 2  # 正在维护
-    UNAVAILABLE = 3  # 不可用
+    RUNNING = 0  # 运行中
+    SHUTDOWN = 1  # 关机
+    UNAVAILABLE = 2  # 不可用
 
 
 class Pile(models.Model):

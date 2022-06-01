@@ -10,12 +10,6 @@ from django.http import HttpRequest, JsonResponse
 from accs_app.controller.util.resp_tool import RetCode
 
 
-with open('private.key', 'rb') as f:
-    JWT_SECRET = f.read()
-with open('public.pem', 'rb') as f:
-    JWT_PUBLIC = f.read()
-
-
 class Role(Enum):
     USER = 0
     ADMIN = 1
@@ -32,7 +26,7 @@ def gen_token(username: str, role: str) -> str:
         'username': username,
         'role': role
     }
-    token = encode(payload, JWT_SECRET, algorithm="RS256")
+    token = encode(payload, 'top-secret', algorithm='HS256')
     return token
 
 
@@ -50,7 +44,7 @@ def preprocess_token(
                 })
             try:
                 token = token.removeprefix('Bearer ')
-                payload = decode(token, JWT_PUBLIC, algorithms=['RS256'])
+                payload = decode(token, 'top-secret', algorithms=['HS256'])
             except DecodeError:
                 return JsonResponse({
                     'code': RetCode.FAIL.value,
