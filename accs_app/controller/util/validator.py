@@ -27,4 +27,3 @@ def validate(request: HttpRequest, method: str = 'POST', schema: Dict = None) ->
         raise ValidationError("请求格式非法") from e
 
     return req
-    

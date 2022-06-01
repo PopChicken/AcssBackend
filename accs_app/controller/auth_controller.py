@@ -89,4 +89,3 @@ def register_api(req: HttpRequest) -> JsonResponse:
         'code': RetCode.SUCCESS.value,
         'message': 'success'
     })
-

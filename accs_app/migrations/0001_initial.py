@@ -15,17 +15,21 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Pile',
             fields=[
-                ('pile_id', models.BigAutoField(primary_key=True, serialize=False, unique=True)),
-                ('status', models.IntegerField(choices=[(0, 'Running'), (1, 'Shutdown'), (2, 'Unavailable')])),
+                ('pile_id', models.BigAutoField(
+                    primary_key=True, serialize=False, unique=True)),
+                ('status', models.IntegerField(choices=[
+                 (0, 'Running'), (1, 'Shutdown'), (2, 'Unavailable')])),
                 ('cumulative_usage_times', models.IntegerField(default=0)),
                 ('cumulative_charging_time', models.IntegerField(default=0)),
-                ('cumulative_charging_amount', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('cumulative_charging_amount', models.DecimalField(
+                    decimal_places=2, max_digits=10)),
             ],
         ),
         migrations.CreateModel(
             name='User',
             fields=[
-                ('user_id', models.BigAutoField(primary_key=True, serialize=False, unique=True)),
+                ('user_id', models.BigAutoField(
+                    primary_key=True, serialize=False, unique=True)),
                 ('username', models.CharField(max_length=20, unique=True)),
                 ('password', models.CharField(max_length=32)),
                 ('is_admin', models.BooleanField(default=False)),
@@ -34,17 +38,24 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Order',
             fields=[
-                ('order_id', models.BigAutoField(primary_key=True, serialize=False, unique=True)),
+                ('order_id', models.BigAutoField(
+                    primary_key=True, serialize=False, unique=True)),
                 ('create_time', models.DateTimeField()),
                 ('begin_time', models.DateTimeField()),
                 ('end_time', models.DateTimeField()),
-                ('charging_cost', models.DecimalField(decimal_places=2, max_digits=5)),
-                ('service_cost', models.DecimalField(decimal_places=2, max_digits=5)),
-                ('total_cost', models.DecimalField(decimal_places=2, max_digits=5)),
-                ('charged_amount', models.DecimalField(decimal_places=2, max_digits=6)),
+                ('charging_cost', models.DecimalField(
+                    decimal_places=2, max_digits=5)),
+                ('service_cost', models.DecimalField(
+                    decimal_places=2, max_digits=5)),
+                ('total_cost', models.DecimalField(
+                    decimal_places=2, max_digits=5)),
+                ('charged_amount', models.DecimalField(
+                    decimal_places=2, max_digits=6)),
                 ('charged_time', models.IntegerField()),
-                ('pile', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='accs_app.pile')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='accs_app.user')),
+                ('pile', models.ForeignKey(
+                    on_delete=django.db.models.deletion.DO_NOTHING, to='accs_app.pile')),
+                ('user', models.ForeignKey(
+                    on_delete=django.db.models.deletion.DO_NOTHING, to='accs_app.user')),
             ],
         ),
     ]

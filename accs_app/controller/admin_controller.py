@@ -42,7 +42,8 @@ def query_all_piles_stat_api(_: RequestContext, req: HttpRequest) -> JsonRespons
 @preprocess_token(limited_role=Role.ADMIN)
 def update_pile_status_api(_: RequestContext, req: HttpRequest) -> JsonResponse:
     try:
-        kwargs = validate(req, method='POST', schema=__update_pile_status_schema)
+        kwargs = validate(req, method='POST',
+                          schema=__update_pile_status_schema)
     except ValidationError as e:
         return JsonResponse({
             'code': RetCode.FAIL.value,

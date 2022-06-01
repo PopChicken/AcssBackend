@@ -27,7 +27,8 @@ class Pile(models.Model):
     status = models.IntegerField(choices=PileStatus.choices)
     cumulative_usage_times = models.IntegerField(default=0)
     cumulative_charging_time = models.IntegerField(default=0)
-    cumulative_charging_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
+    cumulative_charging_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=False)
 
 
 class Order(models.Model):
@@ -39,8 +40,12 @@ class Order(models.Model):
     create_time = models.DateTimeField(blank=False)
     begin_time = models.DateTimeField(blank=False)
     end_time = models.DateTimeField(blank=False)
-    charging_cost = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
-    service_cost = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
-    total_cost = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
-    charged_amount = models.DecimalField(max_digits=6, decimal_places=2, blank=False)
+    charging_cost = models.DecimalField(
+        max_digits=5, decimal_places=2, blank=False)
+    service_cost = models.DecimalField(
+        max_digits=5, decimal_places=2, blank=False)
+    total_cost = models.DecimalField(
+        max_digits=5, decimal_places=2, blank=False)
+    charged_amount = models.DecimalField(
+        max_digits=6, decimal_places=2, blank=False)
     charged_time = models.IntegerField(blank=False)
