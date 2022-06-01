@@ -24,7 +24,7 @@ def get_all_orders(username: str) -> List[Dict[str, Any]]:
             'charging_cost': order.charging_cost,
             'service_cost': order.service_cost,
             'total_cost': order.total_cost,
-            'pile_id': str(order.pile__pile_id)
+            'pile_id': str(order.pile_id)
         }
         order_list.append(order_info)
     return order_list
