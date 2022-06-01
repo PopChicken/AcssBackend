@@ -1,0 +1,4 @@
+Django==4.0.4
+jsonschema==4.5.1
+PyJWT==2.4.0
+django-cors-headers==3.12.0
