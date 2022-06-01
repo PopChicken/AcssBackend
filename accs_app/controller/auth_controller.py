@@ -12,8 +12,14 @@ __login_schema = {
     'type': 'object',
     'required': ['username', 'password'],
     'properties': {
-        'username': {'type': 'string'},
-        'password': {'type': 'string'}
+        'username': {
+            'type': 'string',
+            'errmsg': "username 应为字符串"
+        },
+        'password': {
+            'type': 'string',
+            'errmsg': "password 应为字符串"
+        }
     }
 }
 
@@ -22,9 +28,18 @@ __register_schema = {
     'type': 'object',
     'required': ['username', 'password', 're_password'],
     'properties': {
-        'username': {'type': 'string'},
-        'password': {'type': 'string'},
-        're_password': {'type': 'string'}
+        'username': {
+            'type': 'string',
+            'errmsg': "username 应为字符串"
+        },
+        'password': {
+            'type': 'string',
+            'errmsg': "password 应为字符串"
+        },
+        're_password': {
+            'type': 'string',
+            'errmsg': "re_password 应为字符串"
+        }
     }
 }
 

@@ -14,8 +14,15 @@ __update_pile_status_schema = {
     'type': 'object',
     'required': ['pile_id', 'status'],
     'properties': {
-        'pile_id': {'type': 'string'},
-        'status': {'type': 'string'}
+        'pile_id': {
+            'type': 'string',
+            'errmsg': "pile_id 应为字符串"
+        },
+        'status': {
+            'type': 'string',
+            'enum': ['RUNNING', 'SHUTDOWN', 'UNAVAILABLE'],
+            'errmsg': "status 应为可选值为'RUNNING', 'SHUTDOWN', 'UNAVAILABLE'的字符串"
+        }
     }
 }
 
