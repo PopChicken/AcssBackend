@@ -16,15 +16,13 @@ Including another URLconf
 from django.urls import path
 from django.urls.conf import include
 
-import data.admin_urls as admin_urls
-import data.user_urls as user_urls
-import data.pile_urls as pile_urls
-import schd.urls as schd_urls
+from accs_app import admin_urls
+from accs_app import user_urls
+from accs_app import auth_urls
 
 
 urlpatterns = [
     path('admin/', include(admin_urls)),
     path('user/', include(user_urls)),
-    path('pile/', include(pile_urls)),
-    path('schd/', include(schd_urls))
+    path('user/', include(auth_urls)),
 ]
