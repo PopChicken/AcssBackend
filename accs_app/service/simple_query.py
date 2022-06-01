@@ -2,8 +2,10 @@
 from typing import Any, Dict, List
 
 from django.db.models.query import QuerySet
+from django.core.exceptions import ObjectDoesNotExist
 
-from accs_app.models import Order, Pile
+from accs_app.models import Order, Pile, PileStatus
+from accs_app.service.exceptions import PileDoesNotExisted
 
 
 def get_all_orders(username: str) -> List[Dict[str, Any]]:
@@ -31,12 +33,21 @@ def get_all_piles_status() -> List[Dict[str, Any]]:
     piles: QuerySet[Pile] = Pile.objects.all()
     for pile in piles:
         pile_status = {
-            'pile_id': pile.pile_id,
-            'status': pile.status,
+            'pile_id': str(pile.pile_id),
+            'status': PileStatus[pile.status],
             'cumulative_usage_times': pile.cumulative_usage_times,
             'cumulative_charging_time': pile.cumulative_charging_time,
             'cumulative_charging_amount': pile.cumulative_charging_amount
         }
         status_list.append(pile_status)
-
     return status_list
+
+
+def update_pile_status(pile_id: int, status: PileStatus) -> None:
+    try:
+        pile: Pile = Pile.objects.get(pile_id=pile_id)
+    except ObjectDoesNotExist as e:
+        raise PileDoesNotExisted("充电桩不存在") from e
+
+    pile.status = status
+    pile.save()

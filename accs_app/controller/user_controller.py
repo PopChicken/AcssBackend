@@ -9,7 +9,7 @@ from accs_app.service.util.jwt_tool import RequestContext, preprocess_token
 
 
 @preprocess_token(limited_role=Role.USER)
-def query_orders(context: RequestContext, req: HttpRequest) -> JsonResponse:
+def query_orders_api(context: RequestContext, req: HttpRequest) -> JsonResponse:
     try:
         validate(req, method='GET')
     except ValidationError as e:

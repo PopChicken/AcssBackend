@@ -4,5 +4,5 @@ import accs_app.controller.user_controller as user_controller
 
 
 urlpatterns = [
-    path('query_order_detail', user_controller.query_orders)
+    path('query_order_detail', user_controller.query_orders_api)
 ]

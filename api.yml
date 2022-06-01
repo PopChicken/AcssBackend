@@ -525,7 +525,7 @@ paths:
                             - RUNNING
                             - SHUTDOWN
                             - UNAVAILABLE
-                          example: MAINTAINING
+                          example: RUNNING
                         cumulative_usage_times:
                           type: integer
                           description: 充电桩累计使用次数
@@ -617,10 +617,10 @@ paths:
                 status:
                   description: 充电桩状态
                   enum:
-                    - MAINTAINING
+                    - RUNNING
                     - SHUTDOWN
                     - UNAVAILABLE
-                  example: MAINTAINING
+                  example: RUNNING
       responses:
         "200":
           description: 通用响应

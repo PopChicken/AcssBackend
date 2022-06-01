@@ -15,3 +15,7 @@ class UserAlreadyExisted(ServiceError):
 
 class WrongPassword(ServiceError):
     pass
+
+
+class PileDoesNotExisted(ServiceError):
+    pass

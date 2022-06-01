@@ -1,7 +1,7 @@
 """身份验证控制器"""
 from django.http import HttpRequest, JsonResponse
 
-import accs_app.service.auth as auth
+from accs_app.service.auth import login, register
 
 from accs_app.controller.util.validator import validate, ValidationError
 from accs_app.controller.util.resp_tool import RetCode
@@ -29,7 +29,7 @@ __register_schema = {
 }
 
 
-def login(req: HttpRequest) -> JsonResponse:
+def login_api(req: HttpRequest) -> JsonResponse:
     try:
         kwargs = validate(req, schema=__login_schema)
     except ValidationError as e:
@@ -40,7 +40,7 @@ def login(req: HttpRequest) -> JsonResponse:
     username = kwargs['username']
     password = kwargs['password']
     try:
-        token = auth.login(username, password)
+        token = login(username, password)
     except UserDoesNotExisted as e:
         return JsonResponse({
             'code': RetCode.FAIL.value,
@@ -61,7 +61,7 @@ def login(req: HttpRequest) -> JsonResponse:
     })
 
 
-def register(req: HttpRequest) -> JsonResponse:
+def register_api(req: HttpRequest) -> JsonResponse:
     try:
         kwargs = validate(req, schema=__register_schema)
     except ValidationError as e:
@@ -73,7 +73,7 @@ def register(req: HttpRequest) -> JsonResponse:
     password = kwargs['password']
     re_password = kwargs['re_password']
     try:
-        auth.register(username, password, re_password)
+        register(username, password, re_password)
     except UserAlreadyExisted as e:
         return JsonResponse({
             'code': RetCode.FAIL.value,
