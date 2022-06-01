@@ -18,11 +18,11 @@ from django.urls.conf import include
 
 from accs_app import admin_urls
 from accs_app import user_urls
-from accs_app import auth_urls
+from accs_app import generic_urls
 
 
 urlpatterns = [
     path('admin/', include(admin_urls)),
     path('user/', include(user_urls)),
-    path('user/', include(auth_urls)),
+    path('', include(generic_urls)),
 ]
