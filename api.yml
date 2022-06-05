@@ -217,11 +217,11 @@ paths:
                   example: F
                 require_amount:
                   type: string
-                  description: 请求充电量（单位：Ah 精确到2位小数）
+                  description: 请求充电量（单位：kWh 精确到2位小数）
                   example: "47.74"
                 battery_size:
                   type: string
-                  description: 电池容量（单位：Ah 精确到2位小数）
+                  description: 电池容量（单位：kWh 精确到2位小数）
                   example: "60.00"
       responses:
         "200":
@@ -276,7 +276,7 @@ paths:
                   example: F
                 require_amount:
                   type: string
-                  description: 请求充电量（单位：Ah 精确到2位小数）
+                  description: 请求充电量（单位：kWh 精确到2位小数）
                   example: "47.74"
       responses:
         "200":
@@ -360,8 +360,8 @@ paths:
                           description: 订单创建时间
                           example: 2022-01-01T12:11:11.000
                         charged_amount:
-                          type: number
-                          description: 充电电量（单位：Ah 精确到2位小数）
+                          type: string
+                          description: 充电电量（单位：kWh 精确到2位小数）
                           example: "14.53"
                         charged_time:
                           type: integer
@@ -378,15 +378,15 @@ paths:
                           description: 结束充电时间
                           example: 2022-01-01T12:11:11.000
                         charging_cost:
-                          type: number
+                          type: string
                           description: 充电费用（单位：元 精确到2位小数）
                           example: "8.92"
                         service_cost:
-                          type: number
+                          type: string
                           description: 服务费用（单位：元 精确到2位小数）
                           example: "1.23"
                         total_cost:
-                          type: number
+                          type: string
                           description: 总费用（单位：元 精确到2位小数）
                           example: "10.15"
                         pile_id:
@@ -496,22 +496,22 @@ paths:
                           example: 173
                         cumulative_charging_time:
                           type: integer
-                          description: 累计充电时长（单位：小时）
-                          example: 205
+                          description: 累计充电时长（单位：秒）
+                          example: 1200000
                         cumulative_charging_amount:
-                          type: number
-                          description: 累计充电量（单位：Ah 精确到2位小数）
-                          example: 1873.25
+                          type: string
+                          description: 累计充电量（单位：kWh 精确到2位小数）
+                          example: "1873.25"
                         cumulative_charging_earning:
-                          type: number
+                          type: string
                           description: 累计充电费用（单位：元 精确到2位小数）
                           example: "2312.12"
                         cumulative_service_earning:
-                          type: number
+                          type: string
                           description: 累计服务费用（单位：元 精确到2位小数）
                           example: "121.08"
                         cumulative_earning:
-                          type: number
+                          type: string
                           description: 累计总费用（单位：元 精确到2位小数）
                           example: "2433.20"
   /admin/query_all_piles_stat:
@@ -563,12 +563,12 @@ paths:
                           example: 53
                         cumulative_charging_time:
                           type: integer
-                          description: 充电桩累计充电时间（单位：小时）
-                          example: 287
+                          description: 充电桩累计充电时间（单位：秒）
+                          example: 287218
                         cumulative_charging_amount:
-                          type: number
-                          description: 充电桩累计充电电量（单位：Ah）
-                          example: 2191.32
+                          type: string
+                          description: 充电桩累计充电电量（单位：kWh）
+                          example: "2191.32"
   /admin/query_queue:
     get:
       tags:
@@ -609,12 +609,12 @@ paths:
                           description: 用户名
                           example: jinuo
                         battery_size:
-                          type: number
-                          description: 电池容量（单位：Ah 精确到2位小数）
+                          type: string
+                          description: 电池容量（单位：kWh 精确到2位小数）
                           example: "60.00"
                         require_amount:
-                          type: number
-                          description: 请求充电量（单位：Ah 精确到2位小数）
+                          type: string
+                          description: 请求充电量（单位：kWh 精确到2位小数）
                           example: "47.74"
                         waiting_time:
                           type: integer
