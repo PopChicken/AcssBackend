@@ -20,11 +20,19 @@ class PileStatus(models.IntegerChoices):
     UNAVAILABLE = 2  # 不可用
 
 
+class PileType(models.IntegerChoices):
+    """充电桩类型枚举类
+    """
+    CHARGE = 0  # 普通充电桩
+    FAST_CHARGE = 1  # 快充充电桩
+
+
 class Pile(models.Model):
     """充电桩ORM模型
     """
     pile_id = models.BigAutoField(primary_key=True, unique=True, blank=False)
     status = models.IntegerField(choices=PileStatus.choices)
+    pile_type = models.IntegerField(choices=PileType.choices)
     cumulative_usage_times = models.IntegerField(default=0)
     cumulative_charging_time = models.IntegerField(default=0)
     cumulative_charging_amount = models.DecimalField(
