@@ -11,4 +11,5 @@ urlpatterns = [
     path('submit_charging_request', user_controller.submit_charging_request),
     path('edit_charging_request', user_controller.edit_charging_request),
     path('end_charging_request', user_controller.end_charging_request),
+    path('preview_queue', user_controller.preview_queue_api),
 ]

@@ -167,3 +167,47 @@ def end_charging_request(context: RequestContext, req: HttpRequest) -> JsonRespo
         'code': RetCode.SUCCESS.value,
         'message': 'success'
     })
+
+
+# TODO 兼容修改请求与故障恢复
+@preprocess_token(limited_role=Role.USER)
+def preview_queue_api(context: RequestContext, req: HttpRequest) -> JsonResponse:
+    try:
+        validate(req, method='GET')
+    except ValidationError as e:
+        return JsonResponse({
+            'code': RetCode.FAIL.value,
+            'message': str(e)
+        })
+
+    requested_flag = False
+
+    try:
+        request_id = scheduler.get_request_id_by_username(context.username)
+        position, pile_id = scheduler.get_in_queue_position(request_id)
+        if pile_id is None:
+            place = 'WAITINGPLACE'
+        else:
+            place = pile_id
+    except MappingNotExisted:
+        requested_flag = True
+
+    if not requested_flag:
+        cur_state = 'NOTCHARGING'
+    elif pile_id is None:
+        cur_state = 'WAITINGSTAGE1'
+    elif position == 0:
+        cur_state = 'CHARGING'
+    else:
+        cur_state = 'WAITINGSTAGE2'
+
+    return JsonResponse({
+        'code': RetCode.SUCCESS.value,
+        'message': 'success',
+        'data': {
+            'charge_id': str(request_id),
+            'queue_len': position,
+            'cur_state': cur_state,
+            'place': place
+        }
+    })
