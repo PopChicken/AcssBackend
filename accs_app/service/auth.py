@@ -1,6 +1,7 @@
 """authentication service
 """
 import hashlib
+from typing import Tuple
 
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -20,7 +21,7 @@ def register(username: str, password: str, re_password: str) -> None:
     user.save()
 
 
-def login(username: str, password: str) -> str:
+def login(username: str, password: str) -> Tuple[str, Role]:
     """登陆
 
     Args:
@@ -32,7 +33,7 @@ def login(username: str, password: str) -> str:
         WrongPassword: 密码错误
 
     Returns:
-        str: JWT令牌
+        Tuple[str, Role]: JWT令牌, 角色
     """
     try:
         user: User = User.objects.get(username=username)
@@ -44,4 +45,4 @@ def login(username: str, password: str) -> str:
     role = Role.USER.name
     if user.is_admin:
         role = Role.ADMIN.name
-    return gen_token(username, role)
+    return gen_token(username, role), role
