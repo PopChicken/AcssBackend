@@ -3,7 +3,9 @@ from datetime import datetime
 from decimal import Decimal
 
 from accs_app.models import PileType
-
+from accs_app.models import Order
+from accs_app.models import User
+from accs_app.service.timemock import get_datetime_now
 
 # 计费区间:
 # |  index   |   0    |   1    |    2    |    3    |    4    |    5    |   6    |
@@ -40,7 +42,7 @@ CHARGING_COST_PER_KWH_BOTTOM = Decimal('0.40')
 
 def calc_cost(begin_time: datetime,
               end_time: datetime,
-              amount: Decimal) -> Decimal:
+              amount: Decimal):
     """计算费用
 
     Args:
@@ -49,7 +51,9 @@ def calc_cost(begin_time: datetime,
         amount (Decimal): 用量（单位：度）
 
     Returns:
-        Decimal: 费用
+        Decimal: 总费用
+        Decimal: 充电费
+        Decimal: 服务费
     """
     intervals_time_cnt = [0, 0, 0]           # 三种区间的计时列表（单位：秒）
     intervals_charging_cost = [0, 0, 0]       # 三种区间的充电量列表（单位：度）
@@ -108,10 +112,11 @@ def calc_cost(begin_time: datetime,
     # 总费用 = 充电费 + 服务费
     print(datetime.now(), 'charging_cost', charging_cost, sep='\t')
     print(datetime.now(), 'service_cost', service_cost, sep='\t')
-    return Decimal(charging_cost + service_cost).quantize(Decimal('0.00'))
+    charging_cost = Decimal(charging_cost).quantize(Decimal(0.00))
+    service_cost = Decimal(service_cost).quantize(Decimal(0.00))
+    return charging_cost + service_cost, charging_cost, service_cost
 
 
-# TODO 完成详单生成函数
 def create_order(request_type: PileType,
                  pile_id: int,
                  username: str,
@@ -133,11 +138,29 @@ def create_order(request_type: PileType,
         begin_time (datetime): 开始时间
         end_time (datetime): 结束时间
     """
+    costs = calc_cost(begin_time=begin_time, end_time=end_time,amount=amount)
+    o = Order()
+    o.request_type = request_type
+    o.pile_id = pile_id
+    o.begin_time = begin_time
+    o.end_time = end_time
+    o.create_time = get_datetime_now()
+    o.total_cost = costs[0]
+    o.charging_cost = costs[1]
+    o.service_cost = costs[2]
+    o.charged_amount = amount
+    o.charged_time = (end_time-begin_time).seconds
     # 需要注意详单内有外键 pile 和 user，这里传入的是username，需要设置为user_id
+    # 查找 User
+    user = User.objects.get(username=username)
+    o.user_id = user.user_id
+    # 保存数据至数据库
+    o.save()
     print("order created!")  # debug
 
 
 if __name__ == '__main__':
+    # calc_cost-Tests
     # Test-01
     begin = datetime(2022, 6, 6, 7, 0, 0)
     end = datetime(2022, 6, 6, 10, 0, 0)
@@ -181,3 +204,9 @@ if __name__ == '__main__':
     else:
         print(datetime.now(), 'Pass Test-04 ✘', sep='\t')
     print()
+    
+    # create_order-Tests
+    begin = datetime(2022, 6, 6, 21, 0, 0)
+    end = datetime(2022, 6, 7, 21, 0, 0)
+    amount = Decimal(30)
+    create_order(PileType.FAST_CHARGE,5,'user',amount,Decimal(1000),begin,end)
