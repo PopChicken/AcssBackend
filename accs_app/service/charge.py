@@ -2,6 +2,8 @@
 from datetime import datetime
 from decimal import Decimal
 
+from accs_app.models import PileType
+
 
 # 计费区间:
 # |  index   |   0    |   1    |    2    |    3    |    4    |    5    |   6    |
@@ -28,10 +30,12 @@ WHICH_TYPE = [0, 1, 2, 1, 2, 1, 0]
 SERVICE_COST_PER_KWH = Decimal('0.80')
 
 # 阶梯计价（时间左闭右开）
-CHARGING_COST_PER_KWH_TOP = Decimal('1.00')     # 峰时: 10:00~15:00 & 18:00~21:00
+# 峰时: 10:00~15:00 & 18:00~21:00
+CHARGING_COST_PER_KWH_TOP = Decimal('1.00')
 # 平时: 7:00~10:00 & 15:00~18:00 & 21:00~23:00
 CHARGING_COST_PER_KWH_MEDIUM = Decimal('0.70')
-CHARGING_COST_PER_KWH_BOTTOM = Decimal('0.40')  # 谷时: 23:00~次日7:00
+# 谷时: 23:00~次日7:00
+CHARGING_COST_PER_KWH_BOTTOM = Decimal('0.40')
 
 
 def calc_cost(begin_time: datetime,
@@ -105,6 +109,32 @@ def calc_cost(begin_time: datetime,
     print(datetime.now(), 'charging_cost', charging_cost, sep='\t')
     print(datetime.now(), 'service_cost', service_cost, sep='\t')
     return Decimal(charging_cost + service_cost).quantize(Decimal('0.00'))
+
+
+# TODO 完成详单生成函数
+def create_order(request_type: PileType,
+                 pile_id: int,
+                 username: str,
+                 amount: Decimal,
+                 battery_capacity: Decimal,
+                 begin_time: datetime,
+                 end_time: datetime) -> None:
+    """生成详单
+
+    使用 Django ORM 生成一条详单记录，详单的 create_time 字段
+    使用 timemock 模块的 get_datetime_now 获取。
+
+    Args:
+        request_type (PileType): 充电模式
+        pild_id (int): 充电桩编号
+        username (str): 用户名
+        amount (Decimal): 用量
+        battery_capacity (Decimal): 电池容量
+        begin_time (datetime): 开始时间
+        end_time (datetime): 结束时间
+    """
+    # 需要注意详单内有外键 pile 和 user，这里传入的是username，需要设置为user_id
+    print("order created!")  # debug
 
 
 if __name__ == '__main__':
