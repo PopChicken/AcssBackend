@@ -45,6 +45,15 @@ def get_all_piles_status() -> List[Dict[str, Any]]:
     return status_list
 
 
+def get_pile_status(pile_id: int) -> PileStatus:
+    try:
+        pile: Pile = Pile.objects.get(pile_id=pile_id)
+    except ObjectDoesNotExist as e:
+        raise PileDoesNotExisted("充电桩不存在") from e
+
+    return PileStatus(pile.status)
+
+
 def update_pile_status(pile_id: int, status: PileStatus) -> None:
     try:
         pile: Pile = Pile.objects.get(pile_id=pile_id)

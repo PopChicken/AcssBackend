@@ -9,7 +9,7 @@ from accs_app.service.auth import Role
 from accs_app.service.exceptions import AlreadyRequested, IllegalUpdateAttemption, MappingNotExisted, OutOfSpace
 from accs_app.service.simple_query import get_all_orders
 from accs_app.service.util.jwt_tool import RequestContext, preprocess_token
-from accs_app.service.schd import scheduler
+from accs_app.service.schd import StatusType, scheduler
 
 
 __submit_charging_request_schema = {
@@ -181,33 +181,37 @@ def preview_queue_api(context: RequestContext, req: HttpRequest) -> JsonResponse
         })
 
     requested_flag = False
+    request_id = None
+    pile_id = None
+    position = -1
 
     try:
         request_id = scheduler.get_request_id_by_username(context.username)
-        position, pile_id = scheduler.get_in_queue_position(request_id)
-        if pile_id is None:
-            place = 'WAITINGPLACE'
-        else:
-            place = pile_id
+        reqeust_status = scheduler.get_request_status(request_id)
+        pile_id = reqeust_status.pile_id
+        position = reqeust_status.position
     except MappingNotExisted:
         requested_flag = True
 
-    if not requested_flag:
-        cur_state = 'NOTCHARGING'
-    elif pile_id is None:
-        cur_state = 'WAITINGSTAGE1'
-    elif position == 0:
-        cur_state = 'CHARGING'
+    if pile_id is None:
+        place = 'WAITINGPLACE'
     else:
-        cur_state = 'WAITINGSTAGE2'
+        place = pile_id
+    if requested_flag:
+        cur_state = StatusType.NOTCHARGING.name
+    else:
+        cur_state = reqeust_status.status.name
+
+    if request_id is not None:
+        request_id = str(request_id)
 
     return JsonResponse({
         'code': RetCode.SUCCESS.value,
         'message': 'success',
         'data': {
-            'charge_id': str(request_id),
+            'charge_id': request_id,
             'queue_len': position,
             'cur_state': cur_state,
-            'place': place
+            'place': str(place)
         }
     })
