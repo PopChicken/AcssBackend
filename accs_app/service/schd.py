@@ -215,7 +215,8 @@ class Scheduler:
         return request
 
     @classmethod
-    def __push_queue(cls, queue: Tuple[List[_ChargingRequest], int], request: _ChargingRequest) -> None:
+    def __push_queue(cls, queue: Tuple[List[_ChargingRequest], int],
+                     request: _ChargingRequest) -> None:
         queue[0].append(request)
         queue[1] += 1
 
@@ -324,14 +325,14 @@ class Scheduler:
 
             if request.is_executing:
                 if not self.__check_if_completed(request):
-                    debug("[scheduler] request %d is cancelled while executing.", request.request_id)
+                    debug("[scheduler] request %d is cancelled while executing.",
+                          request.request_id)
                 # 触发结算流程生成详单
                 debug("[scheduler] request %d created an order.", request_id)
                 create_order(request.request_type,
                              request.pile_id,
                              request.username,
                              request.amount,
-                             request.battery_capacity,
                              request.create_time,
                              end_time=get_datetime_now())
             else:

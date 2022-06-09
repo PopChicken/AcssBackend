@@ -1,6 +1,7 @@
 """计费模块"""
 from datetime import datetime
 from decimal import Decimal
+from logging import debug
 
 from accs_app.models import PileType
 from accs_app.models import Order
@@ -121,7 +122,6 @@ def create_order(request_type: PileType,
                  pile_id: int,
                  username: str,
                  amount: Decimal,
-                 battery_capacity: Decimal,
                  begin_time: datetime,
                  end_time: datetime) -> None:
     """生成详单
@@ -138,25 +138,25 @@ def create_order(request_type: PileType,
         begin_time (datetime): 开始时间
         end_time (datetime): 结束时间
     """
-    costs = calc_cost(begin_time=begin_time, end_time=end_time,amount=amount)
-    o = Order()
-    o.request_type = request_type
-    o.pile_id = pile_id
-    o.begin_time = begin_time
-    o.end_time = end_time
-    o.create_time = get_datetime_now()
-    o.total_cost = costs[0]
-    o.charging_cost = costs[1]
-    o.service_cost = costs[2]
-    o.charged_amount = amount
-    o.charged_time = (end_time-begin_time).seconds
+    costs = calc_cost(begin_time=begin_time, end_time=end_time, amount=amount)
+    order = Order()
+    # order.request_type = request_type
+    order.pile_id = pile_id
+    order.begin_time = begin_time
+    order.end_time = end_time
+    order.create_time = get_datetime_now()
+    order.total_cost = costs[0]
+    order.charging_cost = costs[1]
+    order.service_cost = costs[2]
+    order.charged_amount = amount
+    order.charged_time = (end_time-begin_time).seconds
     # 需要注意详单内有外键 pile 和 user，这里传入的是username，需要设置为user_id
     # 查找 User
-    user = User.objects.get(username=username)
-    o.user_id = user.user_id
+    user: User = User.objects.get(username=username)
+    order.user_id = user.user_id
     # 保存数据至数据库
-    o.save()
-    print("order created!")  # debug
+    order.save()
+    debug("order created.")  # debug
 
 
 if __name__ == '__main__':
@@ -204,9 +204,10 @@ if __name__ == '__main__':
     else:
         print(datetime.now(), 'Pass Test-04 ✘', sep='\t')
     print()
-    
+
     # create_order-Tests
     begin = datetime(2022, 6, 6, 21, 0, 0)
     end = datetime(2022, 6, 7, 21, 0, 0)
     amount = Decimal(30)
-    create_order(PileType.FAST_CHARGE,5,'user',amount,Decimal(1000),begin,end)
+    create_order(PileType.FAST_CHARGE, 5, 'user',
+                 amount, begin, end)
