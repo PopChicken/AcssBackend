@@ -1,0 +1,6 @@
+version: '3'
+services:
+  acss-backend:
+    build: .
+    ports:
+      - "1780:8000"
