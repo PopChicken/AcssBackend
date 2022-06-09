@@ -7,7 +7,7 @@ from logging import debug
 from threading import Lock
 import threading
 from time import sleep
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 from django.db.models import QuerySet
 
@@ -493,6 +493,20 @@ class Scheduler:
             if request_id is None:
                 raise MappingNotExisted("用户未创建充电请求")
             return request_id
+
+
+    def snapshot(self) -> List[Dict[str, Any]]:
+        request_list = []
+        for request in self.__waiting_area_map.values():
+            request_info = {
+                'pile_id': str(request.pile_id),
+                'username': request.username,
+                'battery_size': request.battery_capacity,
+                'require_amount': request.amount,
+                'waiting_time': (get_datetime_now() - request.create_time).seconds
+            }
+            request_list.append(request_info)
+        return request_list
 
 
 scheduler: Scheduler = None

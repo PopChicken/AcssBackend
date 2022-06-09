@@ -111,3 +111,22 @@ def query_report_api(_: RequestContext, req: HttpRequest) -> JsonResponse:
         'message': 'success',
         'data': report
     })
+
+
+@preprocess_token(limited_role=Role.ADMIN)
+def query_queue_api(_: RequestContext, req: HttpRequest) -> JsonResponse:
+    try:
+        validate(req, method='GET')
+    except ValidationError as e:
+        return JsonResponse({
+            'code': RetCode.FAIL.value,
+            'message': str(e)
+        })
+
+    snapshot = scheduler.snapshot()
+
+    return JsonResponse({
+        'code': RetCode.SUCCESS.value,
+        'message': 'success',
+        'data': snapshot
+    })
