@@ -1,4 +1,4 @@
-"""accs_site URL Configuration
+"""acss_site URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.0/topics/http/urls/
@@ -16,9 +16,9 @@ Including another URLconf
 from django.urls import path
 from django.urls.conf import include
 
-from accs_app import admin_urls
-from accs_app import user_urls
-from accs_app import generic_urls
+from acss_app import admin_urls
+from acss_app import user_urls
+from acss_app import generic_urls
 
 
 urlpatterns = [

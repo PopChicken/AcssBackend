@@ -11,10 +11,10 @@ from typing import Any, Dict, List, Tuple
 
 from django.db.models import QuerySet
 
-from accs_app.models import Pile, PileType
-from accs_app.service.charge import create_order
-from accs_app.service.timemock import get_datetime_now
-from accs_app.service.exceptions import AlreadyRequested, IllegalUpdateAttemption, MappingNotExisted, OutOfRecycleResource, OutOfSpace
+from acss_app.models import Pile, PileType
+from acss_app.service.charge import create_order
+from acss_app.service.timemock import get_datetime_now
+from acss_app.service.exceptions import AlreadyRequested, IllegalUpdateAttemption, MappingNotExisted, OutOfRecycleResource, OutOfSpace
 
 
 MAX_RECYCLE_ID = 1000

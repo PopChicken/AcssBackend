@@ -1,12 +1,12 @@
 """身份验证控制器"""
 from django.http import HttpRequest, JsonResponse
 
-from accs_app.service.auth import login, register
+from acss_app.service.auth import login, register
 
-from accs_app.controller.util.validator import validate, ValidationError
-from accs_app.controller.util.resp_tool import RetCode
-from accs_app.service.exceptions import UserAlreadyExisted, UserDoesNotExisted, WrongPassword
-from accs_app.service.util.jwt_tool import Role
+from acss_app.controller.util.validator import validate, ValidationError
+from acss_app.controller.util.resp_tool import RetCode
+from acss_app.service.exceptions import UserAlreadyExisted, UserDoesNotExisted, WrongPassword
+from acss_app.service.util.jwt_tool import Role
 
 
 __login_schema = {

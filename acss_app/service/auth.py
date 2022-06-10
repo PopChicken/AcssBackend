@@ -5,9 +5,9 @@ from typing import Tuple
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from accs_app.models import User
-from accs_app.service.exceptions import UserAlreadyExisted, UserDoesNotExisted, WrongPassword
-from accs_app.service.util.jwt_tool import Role, gen_token
+from acss_app.models import User
+from acss_app.service.exceptions import UserAlreadyExisted, UserDoesNotExisted, WrongPassword
+from acss_app.service.util.jwt_tool import Role, gen_token
 
 
 def register(username: str, password: str, re_password: str) -> None:

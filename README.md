@@ -34,7 +34,7 @@
 
 repo 根目录：AcssBackend
 
-​ 站点模块：accs_site
+​ 站点模块：acss_site
 
 ​ 配置文件、根路由模块
 

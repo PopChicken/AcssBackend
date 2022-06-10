@@ -7,7 +7,7 @@ from typing import Callable
 from jwt import encode, decode, DecodeError
 from django.http import HttpRequest, JsonResponse
 
-from accs_app.controller.util.resp_tool import RetCode
+from acss_app.controller.util.resp_tool import RetCode
 
 
 class Role(Enum):

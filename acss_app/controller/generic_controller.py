@@ -1,10 +1,10 @@
 """身份验证控制器"""
 from django.http import HttpRequest, JsonResponse
 
-from accs_app.service.timemock import get_timestamp_now, get_datetime_now
+from acss_app.service.timemock import get_timestamp_now, get_datetime_now
 
-from accs_app.controller.util.validator import validate, ValidationError
-from accs_app.controller.util.resp_tool import RetCode
+from acss_app.controller.util.validator import validate, ValidationError
+from acss_app.controller.util.resp_tool import RetCode
 
 
 def query_time(req: HttpRequest) -> JsonResponse:

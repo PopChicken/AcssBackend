@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accs_app', '0002_pile_pile_type'),
+        ('acss_app', '0002_pile_pile_type'),
     ]
 
     operations = [

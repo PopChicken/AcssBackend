@@ -7,8 +7,8 @@ from django.db.models.query import QuerySet
 from django.db.models import Sum
 from django.core.exceptions import ObjectDoesNotExist
 
-from accs_app.models import Order, Pile, PileStatus
-from accs_app.service.exceptions import PileDoesNotExisted
+from acss_app.models import Order, Pile, PileStatus
+from acss_app.service.exceptions import PileDoesNotExisted
 
 
 def get_all_orders(username: str) -> List[Dict[str, Any]]:
