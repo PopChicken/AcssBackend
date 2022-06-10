@@ -3,7 +3,7 @@ from datetime import datetime
 from decimal import Decimal
 from logging import debug
 
-from accs_app.models import PileType
+from accs_app.models import Pile, PileType
 from accs_app.models import Order
 from accs_app.models import User
 from accs_app.service.timemock import get_datetime_now
@@ -113,8 +113,8 @@ def calc_cost(begin_time: datetime,
     # 总费用 = 充电费 + 服务费
     print(datetime.now(), 'charging_cost', charging_cost, sep='\t')
     print(datetime.now(), 'service_cost', service_cost, sep='\t')
-    charging_cost = Decimal(charging_cost).quantize(Decimal(0.00))
-    service_cost = Decimal(service_cost).quantize(Decimal(0.00))
+    charging_cost = Decimal(charging_cost).quantize(Decimal('0.00'))
+    service_cost = Decimal(service_cost).quantize(Decimal('0.00'))
     return charging_cost + service_cost, charging_cost, service_cost
 
 
@@ -149,7 +149,7 @@ def create_order(request_type: PileType,
     order.charging_cost = costs[1]
     order.service_cost = costs[2]
     order.charged_amount = amount
-    order.charged_time = (end_time-begin_time).seconds
+    order.charged_time = (end_time - begin_time).seconds
     # 需要注意详单内有外键 pile 和 user，这里传入的是username，需要设置为user_id
     # 查找 User
     user: User = User.objects.get(username=username)
@@ -157,6 +157,12 @@ def create_order(request_type: PileType,
     # 保存数据至数据库
     order.save()
     debug("order created.")  # debug
+
+    pile: Pile = Pile.objects.get(pile_id=pile_id)
+    pile.cumulative_charging_amount += order.charged_amount
+    pile.cumulative_charging_time += order.charged_time
+    pile.cumulative_usage_times += 1
+    pile.save()
 
 
 if __name__ == '__main__':

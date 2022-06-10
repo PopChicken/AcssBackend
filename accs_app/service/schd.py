@@ -523,10 +523,10 @@ def on_init() -> None:
     global scheduler
 
     scheduler = Scheduler()
-    for i in range(18):
-        scheduler.submit_request(PileType.CHARGE, f'user{i}', Decimal('5.00'), Decimal('65.50'))
+    # for i in range(18):
+    #     scheduler.submit_request(PileType.CHARGE, f'user{i}', Decimal('5.00'), Decimal('65.50'))
 
-    scheduler.submit_request(PileType.CHARGE, 'user', Decimal('5.00'), Decimal('65.50'))
+    # scheduler.submit_request(PileType.CHARGE, 'user', Decimal('5.00'), Decimal('65.50'))
 
     # scheduler.update_request(15, Decimal('23.00'), Decimal('53.50'))
     # scheduler.end_request(0)
