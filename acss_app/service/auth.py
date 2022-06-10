@@ -42,7 +42,7 @@ def login(username: str, password: str) -> Tuple[str, Role]:
     hashed_password = hashlib.md5(password.encode('utf-8')).hexdigest()
     if user.password != hashed_password:
         raise WrongPassword("密码错误")
-    role = Role.USER.name
+    role = Role.USER
     if user.is_admin:
-        role = Role.ADMIN.name
-    return gen_token(username, role), role
+        role = Role.ADMIN
+    return gen_token(username, role.name), role
