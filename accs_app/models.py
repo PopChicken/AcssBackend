@@ -33,6 +33,7 @@ class Pile(models.Model):
     pile_id = models.BigAutoField(primary_key=True, unique=True, blank=False)
     status = models.IntegerField(choices=PileStatus.choices)
     pile_type = models.IntegerField(choices=PileType.choices)
+    register_time = models.DateField(blank=False)
     cumulative_usage_times = models.IntegerField(default=0)
     cumulative_charging_time = models.IntegerField(default=0)
     cumulative_charging_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
