@@ -12,4 +12,4 @@ WORKDIR /acss_backend/
 COPY --from=0 /usr/local/lib/python3.10/site-packages/ \
     /usr/local/lib/python3.10/site-packages/
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--noreload"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--settings=acss_site.prod_settings", "--noreload"]
