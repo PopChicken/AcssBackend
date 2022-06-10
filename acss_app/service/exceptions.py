@@ -19,3 +19,23 @@ class WrongPassword(ServiceError):
 
 class PileDoesNotExisted(ServiceError):
     pass
+
+
+class IllegalUpdateAttemption(ServiceError):
+    pass
+
+
+class OutOfRecycleResource(ServiceError):
+    pass
+
+
+class OutOfSpace(ServiceError):
+    pass
+
+
+class AlreadyRequested(ServiceError):
+    pass
+
+
+class MappingNotExisted(ServiceError):
+    pass

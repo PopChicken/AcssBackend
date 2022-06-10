@@ -24,6 +24,8 @@ def validate(request: HttpRequest, method: str = 'POST', schema: Dict = None) ->
     except JSONDecodeError as e:
         raise ValidationError("请求解析错误") from e
     except _ValidationError as e:
-        raise ValidationError(f"请求格式非法: {e.schema['errmsg']}") from e
+        if 'errmsg' in e.schema:
+            raise ValidationError(f"请求格式非法: {e.schema['errmsg']}") from e
+        raise ValidationError(f"请求格式非法: {e.message}") from e
 
     return req

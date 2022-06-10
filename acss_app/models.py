@@ -20,15 +20,23 @@ class PileStatus(models.IntegerChoices):
     UNAVAILABLE = 2  # 不可用
 
 
+class PileType(models.IntegerChoices):
+    """充电桩类型枚举类
+    """
+    CHARGE = 0  # 普通充电桩
+    FAST_CHARGE = 1  # 快充充电桩
+
+
 class Pile(models.Model):
     """充电桩ORM模型
     """
     pile_id = models.BigAutoField(primary_key=True, unique=True, blank=False)
     status = models.IntegerField(choices=PileStatus.choices)
+    pile_type = models.IntegerField(choices=PileType.choices)
+    register_time = models.DateField(blank=False)
     cumulative_usage_times = models.IntegerField(default=0)
     cumulative_charging_time = models.IntegerField(default=0)
-    cumulative_charging_amount = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=False)
+    cumulative_charging_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
 
 
 class Order(models.Model):
@@ -40,12 +48,8 @@ class Order(models.Model):
     create_time = models.DateTimeField(blank=False)
     begin_time = models.DateTimeField(blank=False)
     end_time = models.DateTimeField(blank=False)
-    charging_cost = models.DecimalField(
-        max_digits=5, decimal_places=2, blank=False)
-    service_cost = models.DecimalField(
-        max_digits=5, decimal_places=2, blank=False)
-    total_cost = models.DecimalField(
-        max_digits=5, decimal_places=2, blank=False)
-    charged_amount = models.DecimalField(
-        max_digits=6, decimal_places=2, blank=False)
+    charging_cost = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
+    service_cost = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
+    total_cost = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
+    charged_amount = models.DecimalField(max_digits=6, decimal_places=2, blank=False)
     charged_time = models.IntegerField(blank=False)

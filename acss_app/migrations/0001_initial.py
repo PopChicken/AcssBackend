@@ -53,9 +53,9 @@ class Migration(migrations.Migration):
                     decimal_places=2, max_digits=6)),
                 ('charged_time', models.IntegerField()),
                 ('pile', models.ForeignKey(
-                    on_delete=django.db.models.deletion.DO_NOTHING, to='accs_app.pile')),
+                    on_delete=django.db.models.deletion.DO_NOTHING, to='acss_app.pile')),
                 ('user', models.ForeignKey(
-                    on_delete=django.db.models.deletion.DO_NOTHING, to='accs_app.user')),
+                    on_delete=django.db.models.deletion.DO_NOTHING, to='acss_app.user')),
             ],
         ),
     ]

@@ -1,12 +1,13 @@
 """authentication service
 """
 import hashlib
+from typing import Tuple
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from accs_app.models import User
-from accs_app.service.exceptions import UserAlreadyExisted, UserDoesNotExisted, WrongPassword
-from accs_app.service.util.jwt_tool import Role, gen_token
+from acss_app.models import User
+from acss_app.service.exceptions import UserAlreadyExisted, UserDoesNotExisted, WrongPassword
+from acss_app.service.util.jwt_tool import Role, gen_token
 
 
 def register(username: str, password: str, re_password: str) -> None:
@@ -20,7 +21,7 @@ def register(username: str, password: str, re_password: str) -> None:
     user.save()
 
 
-def login(username: str, password: str) -> str:
+def login(username: str, password: str) -> Tuple[str, Role]:
     """登陆
 
     Args:
@@ -32,7 +33,7 @@ def login(username: str, password: str) -> str:
         WrongPassword: 密码错误
 
     Returns:
-        str: JWT令牌
+        Tuple[str, Role]: JWT令牌, 角色
     """
     try:
         user: User = User.objects.get(username=username)
@@ -41,7 +42,7 @@ def login(username: str, password: str) -> str:
     hashed_password = hashlib.md5(password.encode('utf-8')).hexdigest()
     if user.password != hashed_password:
         raise WrongPassword("密码错误")
-    role = Role.USER.name
+    role = Role.USER
     if user.is_admin:
-        role = Role.ADMIN.name
-    return gen_token(username, role)
+        role = Role.ADMIN
+    return gen_token(username, role.name), role

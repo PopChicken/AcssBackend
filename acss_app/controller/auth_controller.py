@@ -1,11 +1,12 @@
 """身份验证控制器"""
 from django.http import HttpRequest, JsonResponse
 
-from accs_app.service.auth import login, register
+from acss_app.service.auth import login, register
 
-from accs_app.controller.util.validator import validate, ValidationError
-from accs_app.controller.util.resp_tool import RetCode
-from accs_app.service.exceptions import UserAlreadyExisted, UserDoesNotExisted, WrongPassword
+from acss_app.controller.util.validator import validate, ValidationError
+from acss_app.controller.util.resp_tool import RetCode
+from acss_app.service.exceptions import UserAlreadyExisted, UserDoesNotExisted, WrongPassword
+from acss_app.service.util.jwt_tool import Role
 
 
 __login_schema = {
@@ -55,7 +56,7 @@ def login_api(req: HttpRequest) -> JsonResponse:
     username = kwargs['username']
     password = kwargs['password']
     try:
-        token = login(username, password)
+        token, role = login(username, password)
     except UserDoesNotExisted as e:
         return JsonResponse({
             'code': RetCode.FAIL.value,
@@ -67,11 +68,16 @@ def login_api(req: HttpRequest) -> JsonResponse:
             'message': str(e)
         })
 
+    is_admin = False
+    if role == Role.ADMIN:
+        is_admin = True
+
     return JsonResponse({
         'code': RetCode.SUCCESS.value,
         'message': 'success',
         'data': {
-            'token': token
+            'token': token,
+            "is_admin": is_admin
         }
     })
 
