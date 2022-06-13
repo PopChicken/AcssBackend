@@ -31,15 +31,18 @@ __register_schema = {
     'properties': {
         'username': {
             'type': 'string',
-            'errmsg': "username 应为字符串"
+            'minLength': 6,
+            'errmsg': "username 应为6位以上字符串"
         },
         'password': {
             'type': 'string',
-            'errmsg': "password 应为字符串"
+            'minLength': 8,
+            'errmsg': "password 应为8位以上字符串"
         },
         're_password': {
             'type': 'string',
-            'errmsg': "re_password 应为字符串"
+            'minLength': 8,
+            'errmsg': "re_password 应为8位以上字符串"
         }
     }
 }
