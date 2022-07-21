@@ -19,11 +19,11 @@ from acss_app.service.exceptions import AlreadyRequested, IllegalUpdateAttemptio
 
 MAX_RECYCLE_ID = 1000
 
-WAITING_AREA_CAPACITY = 20
-WAITING_QUEUE_CAPACITY = 5
+WAITING_AREA_CAPACITY = 15
+WAITING_QUEUE_CAPACITY = 3
 
-NORMAL_PILE_POWER = 30.00
-FAST_CHARGE_PILE_POWER = 60.00
+NORMAL_PILE_POWER = 10.00
+FAST_CHARGE_PILE_POWER = 30.00
 
 
 class _RequestIdAllocator:
@@ -174,7 +174,7 @@ class RequestStatus:
     pile_id: int | None
 
 
-DEFAULT_RECOVERY_MODE = SchedulingMode.TIME_ORDERED
+DEFAULT_RECOVERY_MODE = SchedulingMode.PRIORITY
 
 
 class Scheduler:
@@ -495,7 +495,6 @@ class Scheduler:
                 raise MappingNotExisted("用户未创建充电请求")
             return request_id
 
-
     def snapshot(self) -> List[Dict[str, Any]]:
         request_list = []
         for request in self.__waiting_area_map.values():
@@ -523,10 +522,11 @@ def on_init() -> None:
     global scheduler
 
     scheduler = Scheduler()
-    # for i in range(18):
-    #     scheduler.submit_request(PileType.CHARGE, f'user{i}', Decimal('5.00'), Decimal('65.50'))
+    for i in range(1, 14):
+        scheduler.submit_request(PileType.CHARGE, f'user{i:02d}', Decimal('15.00'), Decimal('65.50'))
 
-    # scheduler.submit_request(PileType.CHARGE, 'user', Decimal('5.00'), Decimal('65.50'))
+    for i in range(15, 31):
+        scheduler.submit_request(PileType.FAST_CHARGE, f'user{i:02d}', Decimal('15.00'), Decimal('65.50'))
 
     # scheduler.update_request(15, Decimal('23.00'), Decimal('53.50'))
     # scheduler.end_request(0)
